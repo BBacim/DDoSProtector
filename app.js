@@ -13,6 +13,9 @@ const app = express();
 
 app.set("view engine", "ejs");
 
+//Get the real ip address
+app.set('trust proxy', true);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
