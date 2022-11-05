@@ -1,14 +1,16 @@
 const router = require("express").Router();
 
-//A Middleware to do some security checks
-//Currently it's only checking for DDoS Attacks
-const securityChecks = require('../security/security');
+//ipAddressCheck is a Middleware to check if the IP Address is allowed to access to the content
+//Otherwise the user should validate the captcha
+//saveRequest is a Middleware to save the request IP and the timestamps
+const { ipAddressCheck, saveRequest } = require("../security/ipaddress");
 
+//A Middleware to do a DDoS-Attack check
+const ddosCheck = require("../security/ddos");
 
-router.get("/*", securityChecks, function (req, res) {
+router.get("/*", ipAddressCheck, saveRequest, ddosCheck, function (req, res) {
   res.render("cleverpush");
 });
-
 
 
 module.exports = router;

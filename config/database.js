@@ -12,12 +12,18 @@ mongoose.connect("mongodb+srv://" + USER + ":" + PASSWORD + "@cluster0.akniq.mon
 });
 
 
-//User-Session Schema
-const ipSchema = new mongoose.Schema({ 
+//Request Schema
+const requestSchema = new mongoose.Schema({ 
   ip: { type: String, required: true },
   timestamps: { type: Number, required: true } 
 });
+const Request = mongoose.model("Request", requestSchema);
 
-const Session = mongoose.model("Session", ipSchema);
+//User-Session Schema
+const ipSchema = new mongoose.Schema({ 
+  ip: { type: String, required: true },
+  allowed: { type: Boolean, required: true } 
+});
+const Device = mongoose.model("Device", ipSchema);
 
 module.exports = mongoose.connection;

@@ -1,17 +1,12 @@
 const connection = require("../config/database");
 require('dotenv').config({path:__dirname+'/../.env'});
-const Session = connection.models.Session;
+const Request = connection.models.Request;
+const Device = connection.models.Device;
 
 
-let securityChecks = async (req, res, next) => {
+let ddosCheck = async (req, res, next) => {
 
-  //Save the IP Address and the request time in a database
-  new Session({ip: req.ip, timestamps: Date.now()}).save((err, data) => {
-        if (err) console.log(err);  
-  });
-
-
-  //Check for possible DDoS Attacks  
+  //Check for possible DDoS Attacks
   let ddosAttack = await checkDDosAttack(req);
   console.log(ddosAttack);
   if (!ddosAttack) {
@@ -19,7 +14,12 @@ let securityChecks = async (req, res, next) => {
     next();
   } else {
     console.log("DDoSAttack");
-    res.render("recaptcha");
+    //Save this Device as blocked
+    Device.updateOne({ ip: req.ip }, {allowed: false}, {upsert: true}, (err, data) => {
+      if (err) console.log(err);
+    });
+    //Show a captcha challenge
+    res.redirect("/");
   }
 };
 
@@ -27,7 +27,7 @@ let securityChecks = async (req, res, next) => {
 //Check the number of requests in a certain amount of time from a certain IP Address
 let checkDDosAttack = (req) => {
   return new Promise(resolve => {
-    Session.find(
+    Request.find(
       {
         ip: req.ip,
         timestamps: { $gt: Date.now() - process.env.TIME }
@@ -46,4 +46,5 @@ let checkDDosAttack = (req) => {
   })
 };
 
-module.exports = securityChecks;
+
+module.exports = ddosCheck;
