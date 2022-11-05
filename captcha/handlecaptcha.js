@@ -1,12 +1,13 @@
 const fetch = require("node-fetch");
 const connection = require("../config/database");
 const Device = connection.models.Device;
+const { CAPTCHA_SECRET } = require("../config/config");
 
 //Check if the user successfully validated the captcha
 let checkCaptcha = (req, res, next) => {
   if (req.body["g-recaptcha-response"]) {
     var urlencoded = new URLSearchParams();
-    urlencoded.append("secret", "6LeK6t8iAAAAANo3We7U15eMGlnu7AZBUYTSphFy");
+    urlencoded.append("secret", CAPTCHA_SECRET);
     urlencoded.append("response", req.body["g-recaptcha-response"]);
 
     var requestOptions = {

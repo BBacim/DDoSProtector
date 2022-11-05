@@ -1,13 +1,11 @@
-require('dotenv').config({path:__dirname+'/../.env'}); //Config variables
-
 const mongoose = require("mongoose");
 
 //Database login data
-const USER = process.env.USER;
-const PASSWORD = process.env.PASSWORD;
+const {USER, PASSWORD, DATABASE_URL, DATABASE_NAME } = require("../config/config");
+
 
 //Database connection
-mongoose.connect("mongodb+srv://" + USER + ":" + PASSWORD + "@cluster0.akniq.mongodb.net/DDosProxyDB", {
+mongoose.connect("mongodb+srv://" + USER + ":" + PASSWORD + DATABASE_URL + "/" + DATABASE_NAME, {
   useNewUrlParser: true,
 });
 

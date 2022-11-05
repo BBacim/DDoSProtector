@@ -1,5 +1,5 @@
 const connection = require("../config/database");
-require('dotenv').config({path:__dirname+'/../.env'});
+const { TIME, ALLOWEDRPS } = require("../config/config");
 const Request = connection.models.Request;
 const Device = connection.models.Device;
 
@@ -30,7 +30,7 @@ let checkDDosAttack = (req) => {
     Request.find(
       {
         ip: req.ip,
-        timestamps: { $gt: Date.now() - process.env.TIME }
+        timestamps: { $gt: Date.now() - TIME }
       },
       (err, data) => {
         if (err) {
@@ -38,7 +38,7 @@ let checkDDosAttack = (req) => {
           resolve(false);
         } else {
           console.log(data);
-          if(data.length > process.env.ALLOWEDRPS) resolve(true);
+          if(data.length > ALLOWEDRPS) resolve(true);
           else resolve(false);
         }
       }
