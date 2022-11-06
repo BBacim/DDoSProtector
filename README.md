@@ -38,7 +38,7 @@ You will be scored on:
 
 
 ## Installation
-Move to "**DDoSProtection**" Folder and write
+Move to "**DDoSProtection**" Folder and run
 
     $ npm install
 
