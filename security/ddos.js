@@ -1,5 +1,5 @@
 const connection = require("../config/database");
-const { TIME, ALLOWEDRPS } = require("../config/config");
+const { TIME, ALLOWEDR } = require("../config/config");
 const Request = connection.models.Request;
 const Device = connection.models.Device;
 
@@ -38,7 +38,7 @@ let checkDDosAttack = (req) => {
           resolve(false);
         } else {
           console.log(data);
-          if(data.length > ALLOWEDRPS) resolve(true);
+          if(data.length > ALLOWEDR) resolve(true);
           else resolve(false);
         }
       }
