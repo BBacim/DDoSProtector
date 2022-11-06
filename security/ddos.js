@@ -4,9 +4,8 @@ const Request = connection.models.Request;
 const Device = connection.models.Device;
 
 
+//Check for possible DDoS Attacks
 let ddosCheck = async (req, res, next) => {
-
-  //Check for possible DDoS Attacks
   let ddosAttack = await checkDDosAttack(req);
   console.log(ddosAttack);
   if (!ddosAttack) {
